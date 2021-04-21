@@ -523,6 +523,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
 			// 让 InstantiationAwareBeanPostProcessor 在这一步有机会返回代理，
 			// 在 《Spring AOP 源码分析》那篇文章中有解释，这里先跳过
+			// TODO 让 InstantiationAwareBeanPostProcessor 在这一步有机会返回代理
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
@@ -535,6 +536,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// 重头戏，创建 bean
+			// TODO BeanPostProcessor在这里面的initializeBean方法执行实例化后才能得到执行
 			Object beanInstance = doCreateBean(beanName, mbdToUse, args);
 			if (logger.isTraceEnabled()) {
 				logger.trace("Finished creating instance of bean '" + beanName + "'");
@@ -1132,6 +1134,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 				Class<?> targetType = determineTargetType(beanName, mbd);
 				if (targetType != null) {
+					// TODO 执行InstantiationAwareBeanPostProcessor接口实现类的postProcessBeforeInstantiation方法
+					//   AbstractAutoProxyCreator.postProcessBeforeInstantiation: 当前bean有自定义的TargetSource实现
+					//   时，这里会创建代理并返回
 					bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
 					if (bean != null) {
 						bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);

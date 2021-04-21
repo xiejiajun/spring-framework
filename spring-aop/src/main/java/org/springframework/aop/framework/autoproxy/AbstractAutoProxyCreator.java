@@ -256,6 +256,9 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// Create proxy here if we have a custom TargetSource.
 		// Suppresses unnecessary default instantiation of the target bean:
 		// The TargetSource will handle target instances in a custom fashion.
+		// TODO 我们可以看到，这里也有创建代理的逻辑，以至于很多人会误以为这里是创建AOP代理的入口。确实，这里是有可能创建代理的，
+		//  但前提是对于相应的 bean 我们有自定义的TargetSource 实现，进到 getCustomTargetSource(...) 方法就清楚了，
+		//  我们需要配置一个 customTargetSourceCreators，它是一个 TargetSourceCreator 数组。
 		TargetSource targetSource = getCustomTargetSource(beanClass, beanName);
 		if (targetSource != null) {
 			if (StringUtils.hasLength(beanName)) {
@@ -398,6 +401,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// We can't create fancy target sources for directly registered singletons.
 		if (this.customTargetSourceCreators != null &&
 				this.beanFactory != null && this.beanFactory.containsBean(beanName)) {
+			// TODO 通过自定义TargetSource创建器创建代理的入口, TargetSource用于封装真实实现类的信息
 			for (TargetSourceCreator tsc : this.customTargetSourceCreators) {
 				TargetSource ts = tsc.getTargetSource(beanClass, beanName);
 				if (ts != null) {
