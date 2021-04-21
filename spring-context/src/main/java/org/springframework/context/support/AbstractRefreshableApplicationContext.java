@@ -119,16 +119,32 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 */
 	@Override
 	protected final void refreshBeanFactory() throws BeansException {
+		// 如果 ApplicationContext 中已经加载过 BeanFactory 了，销毁所有 Bean，关闭 BeanFactory
+		// 注意，应用中 BeanFactory 本来就是可以多个的，这里可不是说应用全局是否有 BeanFactory，而是当前
+		// ApplicationContext 是否有 BeanFactory
 		if (hasBeanFactory()) {
 			destroyBeans();
 			closeBeanFactory();
 		}
 		try {
+			// 初始化一个 DefaultListableBeanFactory，为什么用这个，我们马上说。
+			// DefaultListableBeanFactory实现了所有BeanFactory接口的子接口
+			// (ConfigurableListableBeanFactory,AbstractAutowireCapableBeanFactory)
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
+			// 用于 BeanFactory 的序列化，我想不部分人应该都用不到
 			beanFactory.setSerializationId(getId());
+			// 下面这两个方法很重要，别跟丢了，具体细节之后说
+			// 设置 BeanFactory 的两个配置属性：是否允许 Bean 覆盖、是否允许循环引用
 			customizeBeanFactory(beanFactory);
+			// 加载 Bean 到 BeanFactory 中
 			loadBeanDefinitions(beanFactory);
 			this.beanFactory = beanFactory;
+			/*
+			 * 看到这里的时候，我觉得读者就应该站在高处看 ApplicationContext 了，ApplicationContext 继承自 BeanFactory，
+			 * 但是它不应该被理解为 BeanFactory 的实现类，而是说其内部持有一个实例化的 BeanFactory（DefaultListableBeanFactory）。
+			 * 以后所有的 BeanFactory 相关的操作其实是委托给这个实例来处理的。
+			 * 详见：https://javadoop.com/post/spring-ioc
+			 */
 		}
 		catch (IOException ex) {
 			throw new ApplicationContextException("I/O error parsing bean definition source for " + getDisplayName(), ex);
@@ -213,9 +229,12 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 */
 	protected void customizeBeanFactory(DefaultListableBeanFactory beanFactory) {
 		if (this.allowBeanDefinitionOverriding != null) {
+			// 是否允许 Bean 定义覆盖
 			beanFactory.setAllowBeanDefinitionOverriding(this.allowBeanDefinitionOverriding);
 		}
 		if (this.allowCircularReferences != null) {
+			// 是否允许 Bean 间的循环依赖
+			// 默认情况下，Spring 允许循环依赖，当然如果你在 A 的构造方法中依赖 B，在 B 的构造方法中依赖 A 是不行的。
 			beanFactory.setAllowCircularReferences(this.allowCircularReferences);
 		}
 	}
