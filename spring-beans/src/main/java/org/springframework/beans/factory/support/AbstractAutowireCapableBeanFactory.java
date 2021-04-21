@@ -1817,6 +1817,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
 			// BeanPostProcessor 的 postProcessBeforeInitialization 回调
+			// TODO 调用BeanPostProcessor实现类的postProcessBeforeInitialization方法
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 
@@ -1832,6 +1833,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 		if (mbd == null || !mbd.isSynthetic()) {
 			// BeanPostProcessor 的 postProcessAfterInitialization 回调
+			// TODO 调用BeanPostProcessor实现类的postProcessAfterInitialization方法，这里也是创建Spring AOP
+			//  动态代理的DefaultAdvisorAutoProxyCreator发挥作用的地方
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 
