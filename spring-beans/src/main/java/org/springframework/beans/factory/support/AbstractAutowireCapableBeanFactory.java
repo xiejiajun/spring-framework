@@ -417,6 +417,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	@Override
 	public Object initializeBean(Object existingBean, String beanName) {
+		// TODO 这里面会触发initMethod或者InitializingBean接口的afterPropertiesSet方法
 		return initializeBean(beanName, existingBean, null);
 	}
 
@@ -1829,6 +1830,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			// 处理 bean 中定义的 init-method，
 			// 或者如果 bean 实现了 InitializingBean 接口，调用 afterPropertiesSet() 方法
+			// TODO @Bean(initMethod = xxx ) / xml init-method / InitializingBean接口的afterPropertiesSet方法执行
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {
@@ -1886,6 +1888,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (System.getSecurityManager() != null) {
 				try {
 					AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () -> {
+						// TODO 执行InitializingBean接口的afterPropertiesSet方法
 						((InitializingBean) bean).afterPropertiesSet();
 						return null;
 					}, getAccessControlContext());
@@ -1895,6 +1898,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				}
 			}
 			else {
+				// TODO 执行InitializingBean接口的afterPropertiesSet方法
 				((InitializingBean) bean).afterPropertiesSet();
 			}
 		}
@@ -1904,6 +1908,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (StringUtils.hasLength(initMethodName) &&
 					!(isInitializingBean && "afterPropertiesSet".equals(initMethodName)) &&
 					!mbd.isExternallyManagedInitMethod(initMethodName)) {
+				// TODO 执行用户指定的init方法@Bean的initMethod属性指定或者xml的init-method属性指定
 				invokeCustomInitMethod(beanName, bean, mbd);
 			}
 		}
@@ -1962,6 +1967,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		else {
 			try {
 				ReflectionUtils.makeAccessible(methodToInvoke);
+				// TODO 执行@Bean的initMethod属性指定或者xml的init-method属性指定的init方法
 				methodToInvoke.invoke(bean);
 			}
 			catch (InvocationTargetException ex) {

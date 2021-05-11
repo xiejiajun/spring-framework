@@ -630,6 +630,7 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		if (ele.hasAttribute(INIT_METHOD_ATTRIBUTE)) {
+			// TODO 设置xml配置的init方法
 			String initMethodName = ele.getAttribute(INIT_METHOD_ATTRIBUTE);
 			bd.setInitMethodName(initMethodName);
 		}

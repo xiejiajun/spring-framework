@@ -198,6 +198,7 @@ class ConfigurationClassBeanDefinitionReader {
 			return;
 		}
 
+		// TODO 获取当前对象的@Bean注解对象
 		AnnotationAttributes bean = AnnotationConfigUtils.attributesFor(metadata, Bean.class);
 		Assert.state(bean != null, "No @Bean annotation attributes");
 
@@ -261,6 +262,7 @@ class ConfigurationClassBeanDefinitionReader {
 
 		String initMethodName = bean.getString("initMethod");
 		if (StringUtils.hasText(initMethodName)) {
+			// TODO 配置@Bean的initMethod属性设置的init方法
 			beanDef.setInitMethodName(initMethodName);
 		}
 

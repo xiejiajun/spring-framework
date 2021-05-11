@@ -155,6 +155,7 @@ class ScriptBeanDefinitionParser extends AbstractBeanDefinitionParser {
 		// Determine init method and destroy method.
 		String initMethod = element.getAttribute(INIT_METHOD_ATTRIBUTE);
 		if (StringUtils.hasLength(initMethod)) {
+			// TODO 设置xml配置的init方法
 			bd.setInitMethodName(initMethod);
 		}
 		else if (beanDefinitionDefaults.getInitMethodName() != null) {
@@ -163,6 +164,7 @@ class ScriptBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
 		if (element.hasAttribute(DESTROY_METHOD_ATTRIBUTE)) {
 			String destroyMethod = element.getAttribute(DESTROY_METHOD_ATTRIBUTE);
+			// TODO 设置xml配置的destroy方法
 			bd.setDestroyMethodName(destroyMethod);
 		}
 		else if (beanDefinitionDefaults.getDestroyMethodName() != null) {
