@@ -547,6 +547,10 @@ public abstract class AnnotationUtils {
 	 * <li>Recursively search through all interfaces that the given class declares.
 	 * <li>Recursively search through the superclass hierarchy of the given class.
 	 * </ol>
+	 * TODO Spring实现的可解析组合注解的工具方法，例如Service注解被@Component注解，使用@Service
+	 *   进行注解的对象可以通过该工具方法获取到@Component注解信息，实现了注解的传递，方便Spring定义许多
+	 *   @Configuration、 @Controller之类的组合注解来简化代码和提高代码可读性。Java本身是没有这种注解
+	 *   传递的特性的
 	 * <p>Note: in this context, the term <em>recursively</em> means that the search
 	 * process continues by returning to step #1 with the current interface,
 	 * annotation, or superclass as the class to look for annotations on.
