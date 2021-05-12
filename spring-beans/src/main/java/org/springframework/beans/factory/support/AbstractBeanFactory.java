@@ -1909,6 +1909,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				mbd = getMergedLocalBeanDefinition(beanName);
 			}
 			boolean synthetic = (mbd != null && mbd.isSynthetic());
+			// TODO 从FactoryBean实现类获取对应bean(调用FactoryBean.getObject获取)
+			//   FactoryBean相当于使用xml配置时指定factory-method为getObject的factory-bean配置
+			//  AbstractBeanFactory.getBean -> AbstractBeanFactory.doGetBean -> getObjectForBeanInstance
 			object = getObjectFromFactoryBean(factory, beanName, !synthetic);
 		}
 		return object;
