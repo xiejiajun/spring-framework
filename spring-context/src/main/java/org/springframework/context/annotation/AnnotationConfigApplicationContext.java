@@ -90,6 +90,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 		this();
 		register(componentClasses);
+		// TODO 初始化IOC容器
 		refresh();
 	}
 
@@ -102,6 +103,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	public AnnotationConfigApplicationContext(String... basePackages) {
 		this();
 		scan(basePackages);
+		// TODO 初始化IOC容器
 		refresh();
 	}
 

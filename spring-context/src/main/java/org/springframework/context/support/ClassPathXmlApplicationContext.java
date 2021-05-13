@@ -141,7 +141,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 		super(parent);
 		setConfigLocations(configLocations);
 		if (refresh) {
-			// TODO 核心方法
+			// TODO 核心方法: 初始化IOC容器
 			refresh();
 		}
 	}
