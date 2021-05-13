@@ -609,6 +609,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// 重点，重点，重点
 				// 初始化所有的 singleton beans
 				//（lazy-init 的除外）
+				// TODO 单例Bean初始化的入口，里面有循环依赖处理逻辑：preInstantiateSingletons()
+				//  -> getBean() -> doGetBean() -> createBean() -> doCreateBean()
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
@@ -992,6 +994,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Instantiate all remaining (non-lazy-init) singletons.
 		// 开始初始化
+		// TODO preInstantiateSingletons()
+		//  -> getBean() -> doGetBean() -> createBean() -> doCreateBean()
 		beanFactory.preInstantiateSingletons();
 	}
 

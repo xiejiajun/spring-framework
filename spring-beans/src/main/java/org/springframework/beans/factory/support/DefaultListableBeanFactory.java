@@ -943,12 +943,16 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 									((SmartFactoryBean<?>) factory).isEagerInit());
 						}
 						if (isEagerInit) {
+							// TODO preInstantiateSingletons()
+							//  -> getBean() -> doGetBean() -> createBean() -> doCreateBean()
 							getBean(beanName);
 						}
 					}
 				}
 				else {
 					// 对于普通的 Bean，只要调用 getBean(beanName) 这个方法就可以进行初始化了
+					// TODO preInstantiateSingletons()
+					//  -> getBean() -> doGetBean() -> createBean() -> doCreateBean()
 					getBean(beanName);
 				}
 			}
