@@ -111,6 +111,10 @@ public final class SpringFactoriesLoader {
 	}
 
 	/**
+	 * TODO Spring SPI机制加载spring.factories中配置的各SPI接口实现类列表的工具方法
+	 *   SpringBoot 第三方starter的EnableAutoConfiguration注解就是通过该方法加载
+	 *   spring.factories文件中的key为EnableAutoConfiguration.class的启动自动配置
+	 *   类的
 	 * Load the fully qualified class names of factory implementations of the
 	 * given type from {@value #FACTORIES_RESOURCE_LOCATION}, using the given
 	 * class loader.
@@ -140,6 +144,7 @@ public final class SpringFactoriesLoader {
 
 		result = new HashMap<>();
 		try {
+			// TODO 加载spring.factories文件
 			Enumeration<URL> urls = classLoader.getResources(FACTORIES_RESOURCE_LOCATION);
 			while (urls.hasMoreElements()) {
 				URL url = urls.nextElement();
